@@ -20,5 +20,12 @@ int main() {
         printf("\n");
     }
 
+    printf("PROGRAM mypeakasso;\n");
+    printf("CANVAS-INIT-SECTION :\n");
+    printf("CONST CanvasX = %d ; CONST CanvasY = %d ; CursorX = 1 ; CursorY = 1 ;\n", x, y);
+    printf("BRUSH-DECLARATION-SECTION :\n");
+    printf("BRUSH b1 = 5 1, b2= 7 2;");  // brushlar belirlenip for loop ile yazılacak.
+    
+
     return 0;
 }
