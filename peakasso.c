@@ -13,10 +13,11 @@ int main() {
         scanf("%c%c", &dump1, &dump2);
     }
 
-    int rectangles[3][4] = {
-        {1, 1, 5, 1},
+    int rectangles[4][4] = {
+        {2, 2, 5, 1},
         {3, 2, 7, 2},
-        {5,5,2,4}
+        {5, 7, 2, 4},
+        {8, 8, 1, 1}
     };
     int rectSize = sizeof(rectangles)/sizeof(rectangles[0]);
 
