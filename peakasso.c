@@ -1,26 +1,83 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+
+int rectangles[100][4];
+int rectSize = 0;
+
+int* endPoints(char** arr, int start_x, int start_y, int x, int y) {
+
+    int* endpoints = malloc(sizeof(int)*2), i, j;
+    int right = 0, down = 0;
+    for(i = start_x; i < y; i++) {
+        if(arr[i][start_y] != '*') {
+            right = 1;
+            break;
+        }
+
+        if(arr[i][start_y] == 'X') {
+            continue;
+        }
+
+        for(j = start_y; j < x; j++) {
+            if(arr[i][j] != '*') {
+                down = 1;
+                break;
+            }
+        }
+    }
+    if (i == y) i = i - 1;
+    if (j == x) j = j - 1;
+    endpoints[0] = right ? i-1 : i;
+    endpoints[1] = down ? j-1 : j;
+    for (int k = start_x; k <= endpoints[0]; k++) {
+        for (int l = start_y; l <= endpoints[1]; l++) {
+            arr[k][l] = 'X';
+        }
+    }
+    return endpoints;
+}
+
+void countOfRectangle(char** arr, int x, int y) {
+    int* end;
+    for(int i = 0; i < y; i++) {
+        for(int j = 0; j < x; j++) {
+            if(arr[i][j] == '*') {
+                printf("%d %d\n", i, j);
+                end = endPoints(arr, i, j, x, y);
+                rectangles[rectSize][0] = j+1;
+                rectangles[rectSize][1] = i+1;
+                rectangles[rectSize][2] = end[1]-j+1;
+                rectangles[rectSize++][3] = end[0]-i+1;
+                printf("%d %d %d %d\n", i, j, end[0], end[1]);
+            }
+        }
+    }
+}
+
 
 int main() {
+
     int x, y;
     scanf("%d %d\n", &x, &y);
-    char canvas[y][x];
-    char dump1, dump2;
-
-    for( int i = 0; i < sizeof(canvas)/sizeof(canvas[0]); i++) {
-        for (int j = 0; j < sizeof(canvas[i])/sizeof(canvas[i][0]); j++) {
-            scanf("%c", &canvas[i][j]);
-        }
-        scanf("%c%c", &dump1, &dump2);
+    char** canvas = (char**)malloc(sizeof(char) * y);
+    for (int i = 0; i < y; i++) {
+        canvas[i] = (char*)malloc(sizeof(char) * x);
     }
 
-    // rectangles = findRectangles(canvas); Bu metod eksik
-    int rectangles[4][4] = {
-        {2, 2, 5, 1},
-        {3, 2, 7, 2},
-        {5, 7, 2, 4},
-        {8, 8, 1, 1}
-    };
-    int rectSize = sizeof(rectangles)/sizeof(rectangles[0]);
+    char c;
+    for( int i = 0; i < y; i++) {
+        scanf("%2000[^\n]%c", canvas[i], &c);
+    }
+
+     for( int i = 0; i < y; i++) {
+        for (int j = 0; j < x; j++) {
+            printf("%c", canvas[i][j]);
+        }
+        printf("\n");
+    }   
+
+    countOfRectangle(canvas, x, y);
 
     printf("PROGRAM mypeakasso; !! The number of PAINT-CANVAS statements is %d\n", rectSize);
     printf("CANVAS-INIT-SECTION :\n");

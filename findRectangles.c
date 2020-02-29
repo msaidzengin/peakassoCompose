@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void findend(int i, int j, char** canvas, int output[100][4], int counter) {
     int x = sizeof(canvas)/sizeof(canvas[0]);
@@ -17,7 +18,7 @@ void findend(int i, int j, char** canvas, int output[100][4], int counter) {
         }
 
         for (n = j; n < y; n++) {
-            if (canvas[m][n] == 1) {
+            if (canvas[m][n] == '*') {
                 flagc = 1;
                 break;
             }
@@ -38,7 +39,7 @@ void findend(int i, int j, char** canvas, int output[100][4], int counter) {
 }
 
 
-void get_rectangle_coordinates(int rows, int cols, int canvas[rows][cols]) {
+void get_rectangle_coordinates(int x, int y, char** canvas) {
 
     int output[100][4];
     int counter = 0;
@@ -60,7 +61,10 @@ void get_rectangle_coordinates(int rows, int cols, int canvas[rows][cols]) {
 int main() {
     int x, y;
     scanf("%d %d\n", &x, &y);
-    char canvas[y][x];
+    char** canvas = (char**)malloc(sizeof(char) * y);
+    for (int i = 0; i < y; i++) {
+        canvas[i] = (char*)malloc(sizeof(char) * x);
+    }
     char dump1, dump2;
 
     for( int i = 0; i < sizeof(canvas)/sizeof(canvas[0]); i++) {
