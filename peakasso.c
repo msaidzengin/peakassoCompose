@@ -13,6 +13,7 @@ int main() {
         scanf("%c%c", &dump1, &dump2);
     }
 
+    // rectangles = findRectangles(canvas); Bu metod eksik
     int rectangles[4][4] = {
         {2, 2, 5, 1},
         {3, 2, 7, 2},
