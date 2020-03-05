@@ -1,24 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define MAX_RECTANGLES 100
 
+// an array to keep rectangles' coordinates in the given input
+int rectangles[MAX_RECTANGLES][4];
 
-int rectangles[100][4];
+// size of array rectangles
 int rectSize = 0;
 
 int* endPoints(char** arr, int start_x, int start_y, int x, int y) {
-
+    /* function that finds end point pair(x,y) of given star('*') symbol in array arr */
     int* endpoints = malloc(sizeof(int)*2), i, j;
     int right = 0, down = 0;
+
     for(i = start_x; i < y; i++) {
+        /* if rectangle does not continue in the right way make the loop stopped */
         if(arr[i][start_y] != '*') {
             right = 1;
             break;
         }
 
+        /* dummy symbol to making controls easy */
         if(arr[i][start_y] == 'X') {
             continue;
         }
 
+        /* if rectangle does not continue in the bottom way make the loop stopped */
         for(j = start_y; j < x; j++) {
             if(arr[i][j] != '*') {
                 down = 1;
@@ -26,10 +33,13 @@ int* endPoints(char** arr, int start_x, int start_y, int x, int y) {
             }
         }
     }
+    /* special case for 1-height 1-width */
     if (i == y) i = i - 1;
     if (j == x) j = j - 1;
     endpoints[0] = right ? i-1 : i;
     endpoints[1] = down ? j-1 : j;
+
+
     for (int k = start_x; k <= endpoints[0]; k++) {
         for (int l = start_y; l <= endpoints[1]; l++) {
             arr[k][l] = 'X';
@@ -42,14 +52,13 @@ void countOfRectangle(char** arr, int x, int y) {
     int* end;
     for(int i = 0; i < y; i++) {
         for(int j = 0; j < x; j++) {
+            /* if a rectangle is being drawn */
             if(arr[i][j] == '*') {
-                printf("%d %d\n", i, j);
                 end = endPoints(arr, i, j, x, y);
                 rectangles[rectSize][0] = j+1;
                 rectangles[rectSize][1] = i+1;
                 rectangles[rectSize][2] = end[1]-j+1;
                 rectangles[rectSize++][3] = end[0]-i+1;
-                printf("%d %d %d %d\n", i, j, end[0], end[1]);
             }
         }
     }
@@ -65,17 +74,15 @@ int main() {
         canvas[i] = (char*)malloc(sizeof(char) * x);
     }
 
-    char c;
-    for( int i = 0; i < y; i++) {
-        scanf("%2000[^\n]%c", canvas[i], &c);
+    char c; int j = 0;
+    for(int i = 0; i < y; i++) {
+            c = (char)getchar();
+            while(c != '\n') {
+                canvas[i][j++] = c;
+                scanf("%c",&c);
+            }
+            j = 0;
     }
-
-     for( int i = 0; i < y; i++) {
-        for (int j = 0; j < x; j++) {
-            printf("%c", canvas[i][j]);
-        }
-        printf("\n");
-    }   
 
     countOfRectangle(canvas, x, y);
 
@@ -95,7 +102,7 @@ int main() {
         printf("MOVE CursorY TO %d ;\n", rectangles[i][1]);
         printf("PAINT-CANVAS b%d;\n", (i+1));
     }
-    printf("EXHIBIT-CANVAS;\n");
+    printf("EXHIBIT-CANVAS;");
 
     return 0;
 }
